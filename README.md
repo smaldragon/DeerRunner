@@ -6,10 +6,11 @@
 
 * Being able to easily run games through a simple `RunGame' command inside the game's directory
 * Allow more games to be playable on arm linux
-* Avoid some of the perfomance and compatibility issues that come with using Wine.
+* Avoid some of the perfomance and compatibility issues that come with using Wine
 
-## Supported Engines
+## Supported Players
 
 * **renpy** - python based visual novel engine
+* **easyrpg** - rpg maker 2000
 * **mkxp-z** - rpg maker xp
 * **nw.js** - various engines (ie. rpg maker mv/mz)

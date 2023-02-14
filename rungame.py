@@ -12,7 +12,7 @@ if not os.path.exists("RunGame.sh"):
             install.install[engine]()
             print("Successfully Installed Engine Files!")
     else:
-        print("Could not detect compatible engine")
+        subprocess.run(["/usr/bin/notify-send", "--icon=error", "Could not detect compatible engine in folder!"])
 if os.path.exists("RunGame.sh"):
     path = os.path.abspath(os.getcwd())
     subprocess.run(["sh",f"{path}/RunGame.sh"])

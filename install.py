@@ -11,6 +11,8 @@ def engine_detect():
         return "mkxp-z"
     if os.path.isfile("package.json"):
         return "nw.js"
+    if os.path.isfile("RPG_RT.exe"):
+        return "easyrpg"
     return None
 
 def renpy_install():
@@ -32,7 +34,6 @@ def mkxpz_install():
         mkxpz_build()
         os.chdir(cwd)
 
-    print("oh god")
     for f in os.listdir(f"{libpath}/libs/mkxp-z/"):
         if f.startswith("lib"):
             shutil.copytree(os.path.join(f"{libpath}/libs/mkxp-z/",f),f)
@@ -43,6 +44,22 @@ def mkxpz_install():
         f.write(f"./mkxp-z")
     os.chmod("RunGame.sh",0o711)
 
+def easyrpg_build():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    subprocess.run(["sh",f"easyrpg-build.sh"])
+    
+def easyrpg_install():
+    libpath = os.path.dirname(os.path.abspath(__file__))
+    
+    if not os.path.isdir(f"{libpath}/libs/easyrpg"):
+        cwd = os.getcwd()
+        easyrpg_build()
+        os.chdir(cwd)
+        
+    with open("RunGame.sh","w") as f:
+        f.write(f"{libpath}/libs/easyrpg/easyrpg-player .")
+    os.chmod("RunGame.sh",0o711)
+
 def nwjs_install():
     libpath = os.path.dirname(os.path.abspath(__file__))
     
@@ -50,8 +67,10 @@ def nwjs_install():
         f.write(f"{libpath}/libs/nwjs/nw .")
     os.chmod("RunGame.sh",0o711)
 
+
 install = {
     "renpy": renpy_install,
     "mkxp-z": mkxpz_install,
     "nw.js": nwjs_install,
+    "easyrpg": easyrpg_install,
 }
