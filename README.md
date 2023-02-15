@@ -10,6 +10,7 @@
 
 ## Supported Players
 
+* **ags (Adventure Game Studio)** - adventure game engine
 * **renpy** - python based visual novel engine
 * **easyrpg** - rpg maker 2000
 * **mkxp-z** - rpg maker xp
