@@ -13,6 +13,8 @@ def engine_detect():
         return "nw.js"
     if os.path.isfile("RPG_RT.exe"):
         return "easyrpg"
+    if os.path.isfile("acsetup.cfg"):
+        return "ags"
     return None
 
 def renpy_install():
@@ -67,10 +69,33 @@ def nwjs_install():
         f.write(f"{libpath}/libs/nwjs/nw .")
     os.chmod("RunGame.sh",0o711)
 
+def ags_build():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    subprocess.run(["sh",f"ags-build.sh"])
+
+def ags_install():
+    libpath = os.path.dirname(os.path.abspath(__file__))
+    
+    if not os.path.isdir(f"{libpath}/libs/ags"):
+        cwd = os.getcwd()
+        ags_build()
+        os.chdir(cwd)
+    
+    game_exe = None
+    for f in os.listdir("."):
+        if f.endswith(".exe") and f != "winsetup.exe":
+            game_exe = f
+            break
+    
+    if game_exe:
+        with open("RunGame.sh","w") as f:
+            f.write(f"{libpath}/libs/ags/ags \"{game_exe}\"")
+        os.chmod("RunGame.sh",0o711)
 
 install = {
     "renpy": renpy_install,
     "mkxp-z": mkxpz_install,
     "nw.js": nwjs_install,
     "easyrpg": easyrpg_install,
+    "ags": ags_install,
 }
