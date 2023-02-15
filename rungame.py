@@ -2,6 +2,10 @@
 import install
 import os
 import subprocess
+import sys
+
+if len(sys.argv) == 2:
+    os.chdir(os.path.join(os.getcwd(),sys.argv[1]))
 
 if not os.path.exists("RunGame.sh"):
     engine = install.engine_detect()
