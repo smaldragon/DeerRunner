@@ -15,6 +15,27 @@ def engine_detect():
         return "easyrpg"
     return None
 
+def sf2_install(dest):
+    libpath = os.path.dirname(os.path.abspath(__file__))
+    src = f"{libpath}/libs/soundfont.sf2"
+    print("uh",src)
+    if not os.path.isfile(src):
+        print("downlading soundfont...")
+        cwd = os.getcwd()
+        os.chdir(f"{libpath}/libs")
+        
+        SF2_8MBGM = "https://github.com/exeex/mimi/raw/master/mimi/soundfont/8MBGMSFX.SF2"
+        SF2_FLUID = "https://github.com/Jacalz/fluid-soundfont/raw/master/original-files/FluidR3_GM.sf2"
+        SF2_MERLIN = "https://github.com/wrightflyer/SF2_SoundFonts/raw/master/merlin_gmv32.sf2"
+        subprocess.run([
+            "wget",
+            SF2_MERLIN,
+            "-Osoundfont.sf2"
+        ])
+        
+        os.chdir(cwd)
+    os.symlink(src,dest)
+
 def renpy_install():
     libpath = os.path.dirname(os.path.abspath(__file__))
     
@@ -55,7 +76,9 @@ def easyrpg_install():
         cwd = os.getcwd()
         easyrpg_build()
         os.chdir(cwd)
-        
+    
+    sf2_install("easyrpg.soundfont")
+    
     with open("RunGame.sh","w") as f:
         f.write(f"{libpath}/libs/easyrpg/easyrpg-player .")
     os.chmod("RunGame.sh",0o711)
