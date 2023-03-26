@@ -15,6 +15,9 @@ def engine_detect():
         return "easyrpg"
     if os.path.isfile("acsetup.cfg"):
         return "ags"
+    for f in os.listdir("."):
+        if f.endswith(".rpg"):
+            return "ohrrpgce"
     return None
 
 def sf2_install(dest):
@@ -115,10 +118,23 @@ def ags_install():
             f.write(f"{libpath}/libs/ags/ags \"{game_exe}\"")
         os.chmod("RunGame.sh",0o711)
 
+def ohrrpgce_install():
+    libpath = os.path.dirname(os.path.abspath(__file__))
+    game_exe = None
+    for f in os.listdir("."):
+        if f.endswith(".rpg"):
+            game_exe = f
+            break
+    
+    with open("RunGame.sh","w") as f:
+        f.write(f"{libpath}/libs/ohrrpgce/ohrrpgce-game {game_exe}")
+    os.chmod("RunGame.sh",0o711)
+
 install = {
     "renpy": renpy_install,
     "mkxp-z": mkxpz_install,
     "nw.js": nwjs_install,
     "easyrpg": easyrpg_install,
     "ags": ags_install,
+    "ohrrpgce": ohrrpgce_install,
 }

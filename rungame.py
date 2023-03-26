@@ -5,7 +5,18 @@ import subprocess
 import sys
 
 if len(sys.argv) == 2:
-    os.chdir(os.path.join(os.getcwd(),sys.argv[1]))
+    path = os.path.join(os.getcwd(),sys.argv[1])
+    if os.path.isdir(path):
+        os.chdir(path)
+    elif os.path.isfile(path):
+        dirpath = os.path.dirname(path)
+        filepath = os.path.basename(path)
+        os.chdir(dirpath)
+        if not os.path.exists("RunGame.sh"):
+            with open("RunGame.sh","w") as f:
+                f.write(f"./{filepath}")
+            os.chmod("RunGame.sh",0o711)
+            os.chmod(filepath,0o711)
 
 if not os.path.exists("RunGame.sh"):
     engine = install.engine_detect()
