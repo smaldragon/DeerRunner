@@ -3,6 +3,7 @@ import os
 import stat
 import shutil
 import subprocess
+import json
 
 def engine_detect():
     if os.path.isdir("renpy"):
@@ -91,8 +92,22 @@ def easyrpg_install():
 def nwjs_install():
     libpath = os.path.dirname(os.path.abspath(__file__))
     
+    if not os.path.isdir(f"{libpath}/libs/nwjs"):
+    	print("nwjs library files not found, download from 'nwjs.io' and add to 'DeerRunner/libs/nwjs'")
+    
+    package = {}
+    with open("package.json","r") as f:
+    	package = json.loads(f.read())
+    	print(package)
+    if not 'name' in package or package['name'] == '':
+    	print("No 'name' specified in package.json, setting placeholder.")
+    	package['name'] = "placeholder"
+    	with open("package.json","w") as f:
+    		f.write(json.dumps(package))
+    
     with open("RunGame.sh","w") as f:
         f.write(f"{libpath}/libs/nwjs/nw .")
+    
     os.chmod("RunGame.sh",0o711)
 
 def ags_build():
